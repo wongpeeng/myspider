@@ -5,10 +5,13 @@
 # See documentation in:
 # http://doc.scrapy.org/en/latest/topics/items.html
 
-import scrapy
+from scrapy.item import Item,Field
 
 
-class RdaItem(scrapy.Item):
+class Rda(Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
-    pass
+    in_num=Field()
+    name=Field()
+    in_time=Field()
+    out_time=Field()
