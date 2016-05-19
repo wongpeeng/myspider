@@ -41,9 +41,9 @@ class Myrda():
         opener.open(req)
         req=urllib2.Request('http://crm.rdamicro.com/RDAWebApp/AttendanceMoniter.aspx',postdata,headers=self.headers)
         mypage=opener.open(req).read().decode("utf-8")
-        name=re.findall('fullname=\'(.*?)\'',mypage,re.S)
-        
-        print name[0]
+        info=re.findall('fullname=\'(\w*?) (.*?)\'(.*?)In: </span>(\S*?) (.*?)Out: </span>(.*?)</',mypage,re.S)
+        for item in info:
+            print item[0],item[1],item[3],item[5]
 
 
     def Start(self):
