@@ -3,6 +3,13 @@ import urllib2
 import urllib
 import re
 import cookielib
+import time
+import csv
+
+import sys
+reload(sys)
+sys.setdefaultencoding( "utf-8" )
+
 class Myrda():
     def __init__(self):
         self.data={
@@ -18,9 +25,7 @@ class Myrda():
         }
         self.url="http://crm.rdamicro.com/RDAWebApp/login.aspx"
         self.headers={ 'User-Agent' : 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)' }
-
-
-
+        self.date=time.strftime('%Y%m%d',time.localtime(time.time()))
 
     def GetData(self):
         req=urllib2.Request(self.url,headers=self.headers)
@@ -42,10 +47,11 @@ class Myrda():
         req=urllib2.Request('http://crm.rdamicro.com/RDAWebApp/AttendanceMoniter.aspx',postdata,headers=self.headers)
         mypage=opener.open(req).read().decode("utf-8")
         info=re.findall('fullname=\'(\w*?) (.*?)\'(.*?)In: </span>(\S*?) (.*?)Out: </span>(.*?)</',mypage,re.S)
+        csvfile=file(self.date+'.csv','wb')
+        writer=csv.writer(csvfile)
+        writer.writerow(['id','name','in_time','out_time'])
         for item in info:
-            print item[0],item[1],item[3],item[5]
-
-
+            writer.writerow([item[0],item[1],item[3],item[5]])
     def Start(self):
         self.GetData()
         self.LoginAndSave()
